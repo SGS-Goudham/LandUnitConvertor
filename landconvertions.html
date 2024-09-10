@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Units Conversion</title>
+    <link href="stylesheet.css" rel="stylesheet" >
+</head>
+<body>
+    <div class="hero">
+        <header>
+            <img onclick="window.location.href='https://sgs-goudham-portfolio.vercel.app'" class="logo" src="asserts/logo.png" alt="Logo">
+        </header>
+        <div class="container">
+            <h1>Land Units Conversion Tool</h1>
+            <label for="inputValue">Enter value:</label>
+            <input type="number" id="inputValue" placeholder="Enter value">
+
+            <div class="swap-container">
+                <div class="unit-container">
+                    <label for="inputUnit">From:</label>
+                    <select id="inputUnit">
+                        <option value="" disabled selected>Select Unit</option>
+                        <option value="squareMeters">Square Meters</option>
+                        <option value="hectares">Hectares</option>
+                        <option value="acres">Acres</option>
+                        <option value="squareFeet">Square Feet</option>
+                        <option value="cent">Cent</option>
+                    </select>
+                </div>
+                <div class="swap-button-container">
+                    <button class="swap-button" onclick="swapUnits()">↔️</button>
+                </div>
+                <div class="unit-container">
+                    <label for="outputUnit">To:</label>
+                    <select id="outputUnit">
+                        <option value="" disabled selected>Select Unit</option>
+                        <option value="squareMeters">Square Meters</option>
+                        <option value="hectares">Hectares</option>
+                        <option value="acres">Acres</option>
+                        <option value="squareFeet">Square Feet</option>
+                        <option value="cent">Cent</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="convert" onclick="convert()">Convert</button>
+
+            <div class="result" id="result"></div>
+        </div>
+    </div>
+    <footer>
+        <p class="descnote">&copy; 2024 SGS_Goudham.All Rights Reserved</p>
+        <a href="https://sgs-goudham-portfolio.vercel.app">Contant</a>
+    </footer>
+    <script>
+        function convert() {
+            const inputValue = parseFloat(document.getElementById('inputValue').value);
+            const inputUnit = document.getElementById('inputUnit').value;
+            const outputUnit = document.getElementById('outputUnit').value;
+            
+            if (isNaN(inputValue)) {
+                document.getElementById('result').textContent = 'Please enter a valid number.';
+                return;
+            }
+
+            if (!inputUnit || !outputUnit) {
+                document.getElementById('result').textContent = 'Please select both units.';
+                return;
+            }
+
+            const conversionFactors = {
+                squareMeters: {
+                    squareMeters: 1,
+                    hectares: 0.0001,
+                    acres: 0.000247105,
+                    squareFeet: 10.7639,
+                    cent: 0.0247105
+                },
+                hectares: {
+                    squareMeters: 10000,
+                    hectares: 1,
+                    acres: 2.47105,
+                    squareFeet: 107639,
+                    cent: 247.105
+                },
+                acres: {
+                    squareMeters: 4046.86,
+                    hectares: 0.404686,
+                    acres: 1,
+                    squareFeet: 43560,
+                    cent: 100
+                },
+                squareFeet: {
+                    squareMeters: 0.092903,
+                    hectares: 0.0000092903,
+                    acres: 0.0000229568,
+                    squareFeet: 1,
+                    cent: 0.00229568
+                },
+                cent: {
+                    squareMeters: 40.4686,
+                    hectares: 0.00404686,
+                    acres: 0.01,
+                    squareFeet: 435.6,
+                    cent: 1
+                }
+            };
+
+            const result = inputValue * conversionFactors[inputUnit][outputUnit];
+            document.getElementById('result').textContent = `${inputValue} ${inputUnit} is equal to ${result.toFixed(4)} ${outputUnit}`;
+        }
+
+        function swapUnits() {
+            const inputUnit = document.getElementById('inputUnit');
+            const outputUnit = document.getElementById('outputUnit');
+            const temp = inputUnit.value;
+            inputUnit.value = outputUnit.value;
+            outputUnit.value = temp;
+        }
+    </script>
+</body>
+</html>
